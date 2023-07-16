@@ -1,3 +1,5 @@
+import SearchContact from "./contact/SearchContact";
+
 const Navbar = () =>{
     return(
         <nav className="navbar navbar-dark navbar-expand-sm shadow-lg">
@@ -9,8 +11,7 @@ const Navbar = () =>{
                         <span style={{color: "purple"}}>contact</span>
                     </div>
                     <div className="col">
-                    <div className="input-group mx-2 w-75">
-                    </div>
+                    <SearchContact />
                     </div>
 
                 </div>
@@ -19,3 +20,5 @@ const Navbar = () =>{
         </nav>
     )
 }
+
+export default Navbar;
