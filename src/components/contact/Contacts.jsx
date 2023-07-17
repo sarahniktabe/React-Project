@@ -2,7 +2,7 @@ import Contact from "./Contact";
 import Spinner from "../Spinner";
 import { CURRENTLINE, ORANGE, PINK } from "../../helpers/colors";
 
-const Contacts = ({ contacts }) => {
+const Contacts = ({ contacts , loading }) => {
   return (
     <>
       <section className="container">
@@ -19,7 +19,7 @@ const Contacts = ({ contacts }) => {
           </div>
         </div>
       </section>
-      <section className="container">
+      {loading ? <Spinner/> : <section className="container">
         <div className="row">
           {contacts.length > 0 ? (
             contacts.map((c) => <Contact key={c.id} contact={c} />)
@@ -39,7 +39,8 @@ const Contacts = ({ contacts }) => {
             </div>
           )}
         </div>
-      </section>
+      </section>}
+      
     </>
   );
 };
