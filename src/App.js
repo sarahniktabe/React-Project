@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Routes , Route, useNavigate , Navigate } from "react-router-dom";
+import { Routes , Route , Navigate } from "react-router-dom";
 import "./App.css";
 import {
   AddContact,
@@ -10,6 +10,7 @@ import {
   ViewContact,
   Navbar,
   Spinner,
+  NotFound,
 } 
 from "./components/Index";
 
@@ -22,12 +23,11 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route path="/" element={<Navigate to="/Contacts"/>} />
-        <Route path="/contacts" element={<Contacts/>} />
+        <Route path="/contacts" element={<Contacts contacts={getContacts} loading={loading}/>} />
         <Route path="/contacts/:contactId" element={<Contacts/>} />
         <Route path="/contacts/edit/:contactId" element={<EditContact/>} />
         <Route path="/notfounf" element={<NotFound/>} />
       </Routes>
-      <Contacts contacts={getContacts} loading={loading} />
     </div>
   );
 };

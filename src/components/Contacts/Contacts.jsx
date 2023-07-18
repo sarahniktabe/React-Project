@@ -21,8 +21,8 @@ const Contacts = ({ contacts , loading }) => {
       </section>
       {loading ? <Spinner/> : <section className="container">
         <div className="row">
-          {contacts.length > 0 ? (
-            contacts.map((c) => <Contact key={c.id} contact={c} />)
+          {contacts.length > 0 
+          ? ( contacts.map((c) => <Contact key={c.id} contact={c} />)
           ) : (
             <div
               className="text-center py-5"
@@ -33,7 +33,7 @@ const Contacts = ({ contacts , loading }) => {
               </p>
               <img
                 src={require("../../assets/no-found.gif")}
-                alt="پیدا نشد"
+                alt="Not Found"
                 className="w-25"
               />
             </div>
