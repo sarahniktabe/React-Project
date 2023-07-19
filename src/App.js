@@ -1,32 +1,60 @@
-import { useState } from "react";
-import { Routes , Route , Navigate } from "react-router-dom";
-import "./App.css";
+import { useState, useEffect } from "react";
+import { Navigate, Route, Routes } from "react-router-dom";
+import axios from "axios";
+
 import {
   AddContact,
   Contact,
   Contacts,
   EditContact,
-  SearchContact,
-  ViewContact,
   Navbar,
-  Spinner,
   NotFound,
-} 
-from "./components/Index";
+} from "./components/Index";
 
+import "./App.css";
 
 const App = () => {
-  const [getContacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [getContacts, setContacts] = useState([]);
+  const [getGroups, setGroups] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        const { data: contactsData } = await axios.get(
+          "http://localhost:9000/contacts"
+        );
+        const { data: groupsData } = await axios.get(
+          "http://localhost:9000/groups"
+        );
+        setGroups(groupsData);
+        setContacts(contactsData);
+
+        setLoading(false);
+      } catch (err) {
+        console.log(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <div className="App">
       <Navbar />
       <Routes>
-        <Route path="/" element={<Navigate to="/Contacts"/>} />
-        <Route path="/contacts" element={<Contacts contacts={getContacts} loading={loading}/>} />
-        <Route path="/contacts/:contactId" element={<Contacts/>} />
-        <Route path="/contacts/edit/:contactId" element={<EditContact/>} />
-        <Route path="/notfounf" element={<NotFound/>} />
+        <Route path="/" element={<Navigate to="/contacts" />} />
+        <Route
+          path="/contacts"
+          element={<Contacts contacts={getContacts} loading={loading} />}
+        />
+        <Route path="/contacts/add" element={<AddContact />} />
+        <Route path="/contacts/:contactId" element={<Contact />} />
+        <Route path="/contacts/edit/:contactId" element={<EditContact />} />
+        <Route path="/notfound" element={<NotFound />} />
       </Routes>
     </div>
   );
