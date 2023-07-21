@@ -7,6 +7,7 @@ import {
   Contacts,
   EditContact,
   Navbar,
+  ViewContact,
 } from "./components";
 
 import {
@@ -116,7 +117,7 @@ const App = () => {
             />
           }
         />
-        <Route path="/contacts/:contactId" element={<Contact />} />
+        <Route path="/contacts/:contactId" element={<ViewContact />} />
         <Route path="/contacts/edit/:contactId" element={<EditContact />} />
       </Routes>
     </div>
