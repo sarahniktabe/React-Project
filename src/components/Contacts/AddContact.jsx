@@ -30,7 +30,7 @@ const AddContact = ({loading, contact, setContactInfo, groups, createContactForm
                     className="h4 fw-bold text-center"
                     style={{ color: GREEN }}
                   >
-                Make a new user
+                Make a new contact
                   </p>
                 </div>
               </div>
