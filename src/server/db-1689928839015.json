@@ -17,37 +17,28 @@
       "job": "برنامه نویس",
       "group": "1",
       "id": 2
-    },
-    {
-      "fullname": "sara",
-      "photo": "niktabe",
-      "mobile": "09136599058",
-      "email": "sara.niktabe@gmail.com",
-      "job": "web developer",
-      "group": "1",
-      "id": 3
     }
   ],
   "groups": [
     {
       "id": "1",
-      "name": "Coworker"
+      "name": "همکار"
     },
     {
       "id": "2",
-      "name": "Friend"
+      "name": "دوست"
     },
     {
       "id": "3",
-      "name": "Relatives"
+      "name": "فامیل"
     },
     {
       "id": "4",
-      "name": "Service"
+      "name": "سرویس"
     },
     {
       "id": "5",
-      "name": "Familiar"
+      "name": "آشنا"
     }
   ]
 }

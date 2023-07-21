@@ -18,7 +18,7 @@ const Contact = ({ contact }) => {
               <ul className="list-group">
                 <li className="list-group-item list-group-item-dark">
                   Full name :{"  "}
-                  <span className="fw-bold">"{contact.fullname}"</span>
+                  <span className="fw-bold">{contact.fullname}</span>
                 </li>
 
                 <li className="list-group-item list-group-item-dark">

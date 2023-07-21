@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
-import axios from "axios";
+import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 
 import {
   AddContact,
@@ -8,9 +7,13 @@ import {
   Contacts,
   EditContact,
   Navbar,
-  NotFound,
-} from "./components/Index";
-import {getAllContacts ,getAllGroups} from './services/contactServices'
+} from "./components";
+
+import {
+  getAllContacts,
+  getAllGroups,
+  createContact,
+} from "./services/contactServices";
 
 import "./App.css";
 
@@ -18,6 +21,16 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [getContacts, setContacts] = useState([]);
   const [getGroups, setGroups] = useState([]);
+  const [getContact, setContact] = useState({
+    fullname: "",
+    photo: "",
+    mobile: "",
+    email: "",
+    job: "",
+    group: "",
+  });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,10 +38,10 @@ const App = () => {
         setLoading(true);
 
         const { data: contactsData } = await getAllContacts();
-      
         const { data: groupsData } = await getAllGroups();
-        setGroups(groupsData);
+
         setContacts(contactsData);
+        setGroups(groupsData);
 
         setLoading(false);
       } catch (err) {
@@ -40,6 +53,27 @@ const App = () => {
     fetchData();
   }, []);
 
+  const createContactForm = async (event) => {
+    event.preventDefault();
+    try {
+      const { status } = await createContact(getContact);
+
+      if (status === 201) {
+        setContact({});
+        navigate("/contacts");
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  const setContactInfo = (event) => {
+    setContact({
+      ...getContact,
+      [event.target.name]: event.target.value,
+    });
+  };
+
   return (
     <div className="App">
       <Navbar />
@@ -49,10 +83,20 @@ const App = () => {
           path="/contacts"
           element={<Contacts contacts={getContacts} loading={loading} />}
         />
-        <Route path="/contacts/add" element={<AddContact />} />
+        <Route
+          path="/contacts/add"
+          element={
+            <AddContact
+              loading={loading}
+              setContactInfo={setContactInfo}
+              contact={getContact}
+              groups={getGroups}
+              createContactForm={createContactForm}
+            />
+          }
+        />
         <Route path="/contacts/:contactId" element={<Contact />} />
         <Route path="/contacts/edit/:contactId" element={<EditContact />} />
-        <Route path="/notfound" element={<NotFound />} />
       </Routes>
     </div>
   );
