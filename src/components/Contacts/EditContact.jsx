@@ -10,7 +10,7 @@ import {
 import { Spinner } from "../";
 import { COMMENT, ORANGE, PURPLE } from "../../helpers/colors";
 
-const EditContact = () => {
+const EditContact = ({forceRender , setForeceRender}) => {
   const { contactId } = useParams();
   const navigate = useNavigate();
 
@@ -65,6 +65,7 @@ const EditContact = () => {
       const { data } = await updateContact(state.contact, contactId);
       setState({ ...state, loading: false });
       if (data) {
+        setForeceRender(!forceRender);
         navigate("/contacts");
       }
     } catch (err) {
@@ -105,7 +106,7 @@ const EditContact = () => {
                         value={contact.fullname}
                         onChange={setContactInfo}
                         required={true}
-                        placeholder="نام و نام خانوادگی"
+                        placeholder="Fullname"
                       />
                     </div>
                     <div className="mb-2">
@@ -116,7 +117,7 @@ const EditContact = () => {
                         onChange={setContactInfo}
                         className="form-control"
                         required={true}
-                        placeholder="آدرس تصویر"
+                        placeholder=" URL image"
                       />
                     </div>
                     <div className="mb-2">
@@ -127,7 +128,7 @@ const EditContact = () => {
                         value={contact.mobile}
                         onChange={setContactInfo}
                         required={true}
-                        placeholder="شماره موبایل"
+                        placeholder="Phone number "
                       />
                     </div>
                     <div className="mb-2">
@@ -138,7 +139,7 @@ const EditContact = () => {
                         value={contact.email}
                         onChange={setContactInfo}
                         required={true}
-                        placeholder="آدرس ایمیل"
+                        placeholder="Email address"
                       />
                     </div>
                     <div className="mb-2">
@@ -149,7 +150,7 @@ const EditContact = () => {
                         value={contact.job}
                         onChange={setContactInfo}
                         required={true}
-                        placeholder="شغل"
+                        placeholder="Job"
                       />
                     </div>
                     <div className="mb-2">
@@ -160,7 +161,7 @@ const EditContact = () => {
                         required={true}
                         className="form-control"
                       >
-                        <option value="">انتخاب گروه</option>
+                        <option value=""> Choose group</option>
                         {groups.length > 0 &&
                           groups.map((group) => (
                             <option key={group.id} value={group.id}>
@@ -174,14 +175,14 @@ const EditContact = () => {
                         type="submit"
                         className="btn"
                         style={{ backgroundColor: PURPLE }}
-                        value="ویرایش مخاطب"
+                        value="Edit contact"
                       />
                       <Link
                         to={"/contacts"}
                         className="btn mx-2"
                         style={{ backgroundColor: COMMENT }}
                       >
-                        انصراف
+                        OPT Out
                       </Link>
                     </div>
                   </form>
