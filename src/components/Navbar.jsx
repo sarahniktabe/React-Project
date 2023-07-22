@@ -1,6 +1,7 @@
+import { useLocation } from "react-router-dom";
 import SearchContact from "./Contacts/SearchContact";
 import {PURPLE , BACKGROUND } from '../helpers/colors'
-import { useLocation } from "react-router-dom";
+
 
 const Navbar = () =>{
     const location = useLocation();

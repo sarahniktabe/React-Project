@@ -7,7 +7,7 @@ export { default as Contact } from "./Contacts/Contact";
 export { default as EditContact } from "./Contacts/EditContact";
 export { default as SearchContact } from "./Contacts/SearchContact";
 export { default as ViewContact } from "./Contacts/ViewContact";
-export { default as NotFound} from "./Contacts/NotFound"
+
 
 
 /* other components */
