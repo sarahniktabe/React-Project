@@ -1,6 +1,6 @@
 import {PURPLE} from '../../helpers/colors'
 
-const SearchContact = ()=>{
+const SearchContact = ({query, search})=>{
     return(
         <div className="input-group mx-2 w-75">
       <span
@@ -12,6 +12,8 @@ const SearchContact = ()=>{
       </span>
       <input
         type="text"
+        value={query.text}
+        onChange={search}
         className="form-control"
         placeholder="search contact"
         aria-label="Search"

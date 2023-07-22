@@ -4,10 +4,10 @@ import { confirmAlert } from "react-confirm-alert";
 
 import {
   AddContact,
+  ViewContact,
   Contacts,
   EditContact,
   Navbar,
-  ViewContact,
 } from "./components";
 
 import {
@@ -30,6 +30,7 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [forceRender, setForceRender] = useState(false);
   const [getContacts, setContacts] = useState([]);
+  const [getFilteredContacts, setFilteredContacts] = useState([]);
   const [getGroups, setGroups] = useState([]);
   const [getContact, setContact] = useState({
     fullname: "",
@@ -39,6 +40,7 @@ const App = () => {
     job: "",
     group: "",
   });
+  const [query, setQuery] = useState({ text: "" });
 
   const navigate = useNavigate();
 
@@ -51,6 +53,7 @@ const App = () => {
         const { data: groupsData } = await getAllGroups();
 
         setContacts(contactsData);
+        setFilteredContacts(contactsData);
         setGroups(groupsData);
 
         setLoading(false);
@@ -109,6 +112,7 @@ const App = () => {
       customUI: ({ onClose }) => {
         return (
           <div
+            dir="rtl"
             style={{
               backgroundColor: CURRENTLINE,
               border: `1px solid ${PURPLE}`,
@@ -116,9 +120,9 @@ const App = () => {
             }}
             className="p-4"
           >
-            <h1 style={{ color: YELLOW }}> Delete contact</h1>
+            <h1 style={{ color: YELLOW }}>پاک کردن مخاطب</h1>
             <p style={{ color: FOREGROUND }}>
-              are you sure wanna delete {contactFullname}?{" "}
+              مطمئنی که میخوای مخاطب {contactFullname} رو پاک کنی ؟
             </p>
             <button
               onClick={() => {
@@ -128,20 +132,21 @@ const App = () => {
               className="btn mx-2"
               style={{ backgroundColor: PURPLE }}
             >
-              YES
+              مطمئن هستم
             </button>
             <button
               onClick={onClose}
               className="btn"
               style={{ backgroundColor: COMMENT }}
             >
-              OPT OUT
+              انصراف
             </button>
           </div>
         );
       },
     });
   };
+
   const removeContact = async (contactId) => {
     try {
       setLoading(true);
@@ -157,22 +162,32 @@ const App = () => {
     }
   };
 
+  const contactSearch = (event) => {
+    setQuery({ ...query, text: event.target.value });
+    const allContacts = getContacts.filter((contact) => {
+      return contact.fullname
+        .toLowerCase()
+        .includes(event.target.value.toLowerCase());
+    });
+
+    setFilteredContacts(allContacts);
+  };
+
   return (
     <div className="App">
-      <Navbar />
+      <Navbar query={query} search={contactSearch} />
       <Routes>
         <Route path="/" element={<Navigate to="/contacts" />} />
         <Route
           path="/contacts"
           element={
             <Contacts
-              contacts={getContacts}
+              contacts={getFilteredContacts}
               loading={loading}
               confirmDelete={confirm}
             />
           }
         />
-
         <Route
           path="/contacts/add"
           element={
@@ -186,7 +201,15 @@ const App = () => {
           }
         />
         <Route path="/contacts/:contactId" element={<ViewContact />} />
-        <Route path="/contacts/edit/:contactId" element={<EditContact />} />
+        <Route
+          path="/contacts/edit/:contactId"
+          element={
+            <EditContact
+              forceRender={forceRender}
+              setForceRender={setForceRender}
+            />
+          }
+        />
       </Routes>
     </div>
   );
