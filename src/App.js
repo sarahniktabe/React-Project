@@ -74,7 +74,7 @@ const App = () => {
         const { data: contactsData } = await getAllContacts();
 
         setContacts(contactsData);
-
+        setFilteredContacts(contactsData);
         setLoading(false);
       } catch (err) {
         console.log(err.message);
@@ -112,7 +112,6 @@ const App = () => {
       customUI: ({ onClose }) => {
         return (
           <div
-            dir="rtl"
             style={{
               backgroundColor: CURRENTLINE,
               border: `1px solid ${PURPLE}`,
@@ -120,9 +119,9 @@ const App = () => {
             }}
             className="p-4"
           >
-            <h1 style={{ color: YELLOW }}>پاک کردن مخاطب</h1>
+            <h1 style={{ color: YELLOW }}>Delete contact</h1>
             <p style={{ color: FOREGROUND }}>
-              مطمئنی که میخوای مخاطب {contactFullname} رو پاک کنی ؟
+              Are you sure! you wanna delete {contactFullname} ?
             </p>
             <button
               onClick={() => {
@@ -132,14 +131,14 @@ const App = () => {
               className="btn mx-2"
               style={{ backgroundColor: PURPLE }}
             >
-              مطمئن هستم
+              Do it men.
             </button>
             <button
               onClick={onClose}
               className="btn"
               style={{ backgroundColor: COMMENT }}
             >
-              انصراف
+              OPT OUT
             </button>
           </div>
         );

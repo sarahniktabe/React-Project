@@ -10,8 +10,8 @@ const Contacts = ({ contacts, loading, confirmDelete }) => {
         <div className="grid">
           <div className="row">
             <div className="col">
-              <p className="h3">
-                <Link to={"/contacts/add"} button className="btn mx-2" style={{ backgroundColor: PINK }}>
+              <p className="h3 float-start">
+                <Link to={"/contacts/add"} button className="btn my-4" style={{ backgroundColor: PINK }}>
                   add new contact
                   <i className="fa fa-plus-circle mx-2" />
                 </Link>

@@ -2,7 +2,7 @@ import {PURPLE} from '../../helpers/colors'
 
 const SearchContact = ({query, search})=>{
     return(
-        <div className="input-group mx-2 w-75">
+        <div className="input-group mx-2 w-100">
       <span
         className="input-group-text"
         id="basic-addon1"
