@@ -65,18 +65,10 @@ const App = () => {
       setLoading((prevLoading) => !prevLoading);
       const { status, data } = await createContact(contact);
 
-      /*
-       * NOTE
-       * 1- Rerender -> forceRender, setForceRender
-       * 2- setContact(data)
-       */
-
       if (status === 201) {
         const allContacts = [...contacts, data];
-
         setContacts(allContacts);
         setFilteredContacts(allContacts);
-
         setContact({});
         setLoading((prevLoading) => !prevLoading);
         navigate("/contacts");
