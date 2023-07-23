@@ -6,7 +6,7 @@ import { CURRENTLINE, ORANGE, PINK } from "../../helpers/colors";
 import { ContactContext } from "../../context/contactContext";
 
 const Contacts = () => {
-  const { contacts, loading, deleteContact } = useContext(ContactContext);
+  const { filteredContacts, loading, deleteContact } = useContext(ContactContext);
   return (
     <>
       <section className="container">
@@ -28,8 +28,14 @@ const Contacts = () => {
       ) : (
         <section className="container">
           <div className="row">
-            {contacts.length > 0 ? (
-              contacts.map((c) => <Contact key={c.id} deleteContact={()=> deleteContact(c.id, c.fullname)} contact={c} />)
+            {filteredContacts.length > 0 ? (
+              filteredContacts.map((c) => (
+                <Contact
+                  key={c.id}
+                  deleteContact={() => deleteContact(c.id, c.fullname)}
+                  contact={c}
+                />
+              ))
             ) : (
               <div
                 className="text-center py-5"

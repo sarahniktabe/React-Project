@@ -1,80 +1,79 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 
 import { Link, useNavigate, useParams } from "react-router-dom";
 
-import {
-  getContact,
-  getAllGroups,
-  updateContact,
-} from "../../services/contactServices";
+import { ContactContext } from "../../context/contactContext";
+import { getContact, updateContact } from "../../services/contactServices";
 import { Spinner } from "../";
 import { COMMENT, ORANGE, PURPLE } from "../../helpers/colors";
 
-const EditContact = ({forceRender , setForeceRender}) => {
+const EditContact = () => {
   const { contactId } = useParams();
+  const {
+    contacts,
+    setContacts,
+    setFilteredContacts,
+    loading,
+    setLoading,
+    groups,
+  } = useContext(ContactContext);
+
   const navigate = useNavigate();
 
-  const [state, setState] = useState({
-    loading: false,
-    contact: {
-      fullname: "",
-      photo: "",
-      mobile: "",
-      email: "",
-      job: "",
-      group: "",
-    },
-    groups: [],
-  });
+  const [contact, setContact] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setState({ ...state, loading: true });
+        setLoading(true);
         const { data: contactData } = await getContact(contactId);
-        const { data: groupsData } = await getAllGroups();
-        setState({
-          ...state,
-          loading: false,
-          contact: contactData,
-          groups: groupsData,
-        });
+        setLoading(false);
+        setContact(contactData);
       } catch (err) {
         console.log(err);
-        setState({ ...state, loading: false });
+        setLoading(false);
       }
     };
-
     fetchData();
   }, []);
 
-  const setContactInfo = (event) => {
-    setState({
-      ...state,
-      contact: {
-        ...state.contact,
-        [event.target.name]: [event.target.value],
-      },
+  const onContactChange = (event) => {
+    setContact({
+      ...contact,
+      [event.target.name]: event.target.value,
     });
   };
 
   const submitForm = async (event) => {
     event.preventDefault();
     try {
-      setState({ ...state, loading: true });
-      const { data } = await updateContact(state.contact, contactId);
-      setState({ ...state, loading: false });
-      if (data) {
-        setForeceRender(!forceRender);
+      setLoading(true);
+      // Copy State
+      // Update State
+      // Send Request
+      // status == 200 -> do nothing
+      // status == error -> setState(copyState)
+      const { data, status } = await updateContact(contact, contactId);
+
+      if (status === 200) {
+        setLoading(false);
+
+        const allContacts = [...contacts];
+        const contactIndex = allContacts.findIndex(
+          (c) => c.id === parseInt(contactId)
+        );
+        allContacts[contactIndex] = { ...data };
+
+        setContacts(allContacts);
+        setFilteredContacts(allContacts);
+
         navigate("/contacts");
       }
     } catch (err) {
       console.log(err);
-      setState({ ...state, loading: false });
+      setLoading(false);
     }
   };
-
-  const { loading, contact, groups } = state;
 
   return (
     <>
@@ -104,7 +103,7 @@ const EditContact = ({forceRender , setForeceRender}) => {
                         type="text"
                         className="form-control"
                         value={contact.fullname}
-                        onChange={setContactInfo}
+                        onChange={onContactChange}
                         required={true}
                         placeholder="Fullname"
                       />
@@ -114,7 +113,7 @@ const EditContact = ({forceRender , setForeceRender}) => {
                         name="photo"
                         type="text"
                         value={contact.photo}
-                        onChange={setContactInfo}
+                        onChange={onContactChange}
                         className="form-control"
                         required={true}
                         placeholder=" URL image"
@@ -126,7 +125,7 @@ const EditContact = ({forceRender , setForeceRender}) => {
                         type="number"
                         className="form-control"
                         value={contact.mobile}
-                        onChange={setContactInfo}
+                        onChange={onContactChange}
                         required={true}
                         placeholder="Phone number "
                       />
@@ -137,7 +136,7 @@ const EditContact = ({forceRender , setForeceRender}) => {
                         type="email"
                         className="form-control"
                         value={contact.email}
-                        onChange={setContactInfo}
+                        onChange={onContactChange}
                         required={true}
                         placeholder="Email address"
                       />
@@ -148,7 +147,7 @@ const EditContact = ({forceRender , setForeceRender}) => {
                         type="text"
                         className="form-control"
                         value={contact.job}
-                        onChange={setContactInfo}
+                        onChange={onContactChange}
                         required={true}
                         placeholder="Job"
                       />
@@ -157,7 +156,7 @@ const EditContact = ({forceRender , setForeceRender}) => {
                       <select
                         name="group"
                         value={contact.group}
-                        onChange={setContactInfo}
+                        onChange={onContactChange}
                         required={true}
                         className="form-control"
                       >
@@ -189,6 +188,7 @@ const EditContact = ({forceRender , setForeceRender}) => {
                 </div>
                 <div className="col-md-4">
                   <img
+                  alt=""
                     src={contact.photo}
                     className="img-fluid rounded"
                     style={{ border: `1px solid ${PURPLE}` }}
@@ -199,6 +199,7 @@ const EditContact = ({forceRender , setForeceRender}) => {
 
             <div className="text-center mt-1">
               <img
+              alt=""
                 src={require("../../assets/man-taking-note.png")}
                 height="300px"
                 style={{ opacity: "60%" }}

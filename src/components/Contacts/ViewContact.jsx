@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import { Link, useParams } from "react-router-dom";
+import { ContactContext } from "../../context/contactContext";
 
 import { getContact, getGroup } from "../../services/contactServices";
 import { Spinner } from "../";
@@ -8,36 +9,36 @@ import { CURRENTLINE, CYAN, PURPLE } from "../../helpers/colors";
 
 const ViewContact = () => {
   const { contactId } = useParams();
-
   const [state, setState] = useState({
-    loading: false,
     contact: {},
     group: {},
   });
+  const { loading, setLoading } = useContext(ContactContext);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setState({ ...state, loading: true });
+        setLoading(true);
         const { data: contactData } = await getContact(contactId);
         const { data: groupData } = await getGroup(contactData.group);
 
+        setLoading(false);
         setState({
           ...state,
-          loading: false,
           contact: contactData,
           group: groupData,
         });
       } catch (err) {
         console.log(err.message);
-        setState({ ...state, loading: false });
+        setState({ ...state });
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  const { loading, contact, group } = state;
+  const { contact, group } = state;
 
   return (
     <>
@@ -45,7 +46,7 @@ const ViewContact = () => {
         <div className="container">
           <div className="row my-2 text-center">
             <p className="h3 fw-bold" style={{ color: CYAN }}>
-                Information of contact:
+              Information of contact:
             </p>
           </div>
         </div>
@@ -101,7 +102,7 @@ const ViewContact = () => {
                       className="btn"
                       style={{ backgroundColor: PURPLE }}
                     >
-                        back home
+                      back home
                     </Link>
                   </div>
                 </div>

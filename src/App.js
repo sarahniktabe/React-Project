@@ -65,10 +65,18 @@ const App = () => {
       setLoading((prevLoading) => !prevLoading);
       const { status, data } = await createContact(contact);
 
+      /*
+       * NOTE
+       * 1- Rerender -> forceRender, setForceRender
+       * 2- setContact(data)
+       */
+
       if (status === 201) {
         const allContacts = [...contacts, data];
+
         setContacts(allContacts);
         setFilteredContacts(allContacts);
+
         setContact({});
         setLoading((prevLoading) => !prevLoading);
         navigate("/contacts");
@@ -91,6 +99,7 @@ const App = () => {
       customUI: ({ onClose }) => {
         return (
           <div
+            dir="rtl"
             style={{
               backgroundColor: CURRENTLINE,
               border: `1px solid ${PURPLE}`,
@@ -126,18 +135,33 @@ const App = () => {
   };
 
   const removeContact = async (contactId) => {
-    try {
-      setLoading(true);
-      const response = await deleteContact(contactId);
-      if (response) {
-        const { data: contactsData } = await getAllContacts();
+    /*
+     * NOTE
+     * 1- forceRender -> setForceRender
+     * 2- Server Request
+     * 3- Delete Local State
+     * 4- Delete State Before Server Request
+     */
 
-        setContacts(contactsData);
-        setLoading(false);
+    // Contacts Copy
+    const allContacts = [...contacts];
+    try {
+      const updatedContact = contacts.filter((c) => c.id !== contactId);
+      setContacts(updatedContact);
+      setFilteredContacts(updatedContact);
+
+      // Sending delete request to server
+      const { status } = await deleteContact(contactId);
+
+      if (status !== 200) {
+        setContacts(allContacts);
+        setFilteredContacts(allContacts);
       }
     } catch (err) {
       console.log(err.message);
-      setLoading(false);
+
+      setContacts(allContacts);
+      setFilteredContacts(allContacts);
     }
   };
 
@@ -158,7 +182,8 @@ const App = () => {
         loading,
         setLoading,
         contact,
-        setContact,
+        setContacts,
+        setFilteredContacts,
         contactQuery,
         contacts,
         filteredContacts,
