@@ -26,6 +26,7 @@ import {
   YELLOW,
   COMMENT,
 } from "./helpers/colors";
+import {contactShema} from "./validations/contactValidation"
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -34,6 +35,7 @@ const App = () => {
   const [groups, setGroups] = useState([]);
   const [contact, setContact] = useState({});
   const [contactQuery, setContactQuery] = useState({ text: "" });
+  const [errors, setErrors]= useState([])
 
   const navigate = useNavigate();
 
@@ -63,14 +65,9 @@ const App = () => {
     event.preventDefault();
     try {
       setLoading((prevLoading) => !prevLoading);
-      const { status, data } = await createContact(contact);
+      const { status, data } = await createContact(contact, {abortEarly: false});
 
-      /*
-       * NOTE
-       * 1- Rerender -> forceRender, setForceRender
-       * 2- setContact(data)
-       */
-
+     await contactShema.validation(contact);
       if (status === 201) {
         const allContacts = [...contacts, data];
 
@@ -83,6 +80,7 @@ const App = () => {
       }
     } catch (err) {
       console.log(err.message);
+      setErrors(err.inner);
       setLoading((prevLoading) => !prevLoading);
     }
   };
@@ -99,7 +97,6 @@ const App = () => {
       customUI: ({ onClose }) => {
         return (
           <div
-            dir="rtl"
             style={{
               backgroundColor: CURRENTLINE,
               border: `1px solid ${PURPLE}`,
@@ -107,9 +104,9 @@ const App = () => {
             }}
             className="p-4"
           >
-            <h1 style={{ color: YELLOW }}>پاک کردن مخاطب</h1>
+            <h1 style={{ color: YELLOW }}>Delete contact</h1>
             <p style={{ color: FOREGROUND }}>
-              مطمئنی که میخوای مخاطب {contactFullname} رو پاک کنی ؟
+            Do you sure? wanna delete {contactFullname} ?
             </p>
             <button
               onClick={() => {
@@ -119,14 +116,14 @@ const App = () => {
               className="btn mx-2"
               style={{ backgroundColor: PURPLE }}
             >
-              مطمئن هستم
+               Sure...
             </button>
             <button
               onClick={onClose}
               className="btn"
               style={{ backgroundColor: COMMENT }}
             >
-              انصراف
+              OPT OUT
             </button>
           </div>
         );
@@ -135,13 +132,7 @@ const App = () => {
   };
 
   const removeContact = async (contactId) => {
-    /*
-     * NOTE
-     * 1- forceRender -> setForceRender
-     * 2- Server Request
-     * 3- Delete Local State
-     * 4- Delete State Before Server Request
-     */
+  
 
     // Contacts Copy
     const allContacts = [...contacts];
@@ -187,11 +178,13 @@ const App = () => {
         contactQuery,
         contacts,
         filteredContacts,
+        errors,
         groups,
         onContactChange,
         deleteContact: confirmDelete,
         createContact: createContactForm,
         contactSearch,
+       
       }}
     >
       <div className="App">

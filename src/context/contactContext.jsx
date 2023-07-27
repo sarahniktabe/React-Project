@@ -6,6 +6,7 @@ export const ContactContext = createContext({
     contact:{},
     setContacts:()=>{},
     setFilteredContacts:()=>{},
+    errors: [],
     contacts:[],
     filteredContext:[],
     contactQuery:{},
@@ -15,4 +16,5 @@ export const ContactContext = createContext({
     updateContact:()=>{},
     creactContact:()=>{},
     contactSearch:()=>{},
+   
 })
