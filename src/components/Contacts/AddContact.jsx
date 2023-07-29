@@ -5,7 +5,8 @@ import { COMMENT, GREEN, PURPLE } from "../../helpers/colors";
 import { ContactContext } from "../../context/contactContext";
 
 const AddContact = () => {
-  const {loading, contact, onContactChange, groups, createContact, errors } = useContext(ContactContext)
+  const { loading, contact, onContactChange, groups, createContact, errors } =
+    useContext(ContactContext);
   return (
     <>
       {loading ? (
@@ -14,7 +15,7 @@ const AddContact = () => {
         <>
           <section className="p-3">
             <img
-            alt=""
+              alt=""
               src={require("../../assets/man-taking-note.png")}
               height="400px"
               style={{
@@ -32,17 +33,18 @@ const AddContact = () => {
                     className="h4 fw-bold text-center"
                     style={{ color: GREEN }}
                   >
-                Make a new contact
+                    Make a new contact
                   </p>
                 </div>
               </div>
               <hr style={{ backgroundColor: GREEN }} />
               <div className="row mt-5">
                 <div className="col-md-4">
-                  {errors?.map((error, index) =>(
-                    <p key={index} className="text-danger">{error.message}</p>
-                  )
-                  )}
+                  {errors?.map((error, index) => (
+                    <p key={index} className="text-danger">
+                      {error.message}
+                    </p>
+                  ))}
                   <form onSubmit={createContact}>
                     <div className="mb-2">
                       <input
@@ -52,7 +54,6 @@ const AddContact = () => {
                         onChange={onContactChange}
                         className="form-control"
                         placeholder="Fullname"
-                        /*required={true}*/
                       />
                     </div>
                     <div className="mb-2">
@@ -62,7 +63,6 @@ const AddContact = () => {
                         value={contact.photo}
                         onChange={onContactChange}
                         className="form-control"
-                       /*required={true}*/
                         placeholder="URL Photo"
                       />
                     </div>
@@ -73,7 +73,6 @@ const AddContact = () => {
                         value={contact.mobile}
                         onChange={onContactChange}
                         className="form-control"
-                        /*required={true}*/
                         placeholder="Phone Number"
                       />
                     </div>
@@ -84,7 +83,6 @@ const AddContact = () => {
                         value={contact.email}
                         onChange={onContactChange}
                         className="form-control"
-                        /*required={true}*/
                         placeholder="Email Address"
                       />
                     </div>
@@ -104,7 +102,6 @@ const AddContact = () => {
                         name="group"
                         value={contact.group}
                         onChange={onContactChange}
-                        /*required={true}*/
                         className="form-control"
                       >
                         <option value=""> Choose Group</option>

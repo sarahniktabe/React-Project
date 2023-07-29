@@ -26,7 +26,7 @@ import {
   YELLOW,
   COMMENT,
 } from "./helpers/colors";
-import {contactShema} from "./validations/contactValidation"
+import {contactSchema} from './validations/contactValidation'
 
 const App = () => {
   const [loading, setLoading] = useState(false);
@@ -67,7 +67,7 @@ const App = () => {
       setLoading((prevLoading) => !prevLoading);
       const { status, data } = await createContact(contact, {abortEarly: false});
 
-     await contactShema.validation(contact);
+     await contactSchema.validate(contact, {abortEarly: false});
       if (status === 201) {
         const allContacts = [...contacts, data];
 
@@ -75,6 +75,7 @@ const App = () => {
         setFilteredContacts(allContacts);
 
         setContact({});
+        setErrors([]);
         setLoading((prevLoading) => !prevLoading);
         navigate("/contacts");
       }
