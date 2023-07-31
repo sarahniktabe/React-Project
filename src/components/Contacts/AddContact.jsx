@@ -4,9 +4,13 @@ import { Spinner } from "..";
 import { COMMENT, GREEN, PURPLE } from "../../helpers/colors";
 import { ContactContext } from "../../context/contactContext";
 
+
+
+
 const AddContact = () => {
-  const { loading, contact, onContactChange, groups, createContact, errors } =
+  const {  loading, contact, onContactChange, groups, createContact, errors} =
     useContext(ContactContext);
+    
   return (
     <>
       {loading ? (
@@ -58,51 +62,51 @@ const AddContact = () => {
                     </div>
                     <div className="mb-2">
                       <input
-                        name="photo"
-                        type="text"
-                        value={contact.photo}
-                        onChange={onContactChange}
-                        className="form-control"
+                       name="photo"
+                       type="text"
+                       value={contact.photo}
+                       onChange={onContactChange}
+                       className="form-control"
                         placeholder="URL Photo"
                       />
                     </div>
                     <div className="mb-2">
                       <input
-                        name="mobile"
-                        type="number"
-                        value={contact.mobile}
-                        onChange={onContactChange}
-                        className="form-control"
+                      name="mobile"
+                      type="number"
+                      value={contact.mobile}
+                      onChange={onContactChange}
+                      className="form-control"
                         placeholder="Phone Number"
                       />
                     </div>
                     <div className="mb-2">
                       <input
-                        type="email"
-                        name="email"
-                        value={contact.email}
-                        onChange={onContactChange}
-                        className="form-control"
+                      type="email"
+                      name="email"
+                      value={contact.email}
+                      onChange={onContactChange}
+                      className="form-control"
                         placeholder="Email Address"
                       />
                     </div>
                     <div className="mb-2">
                       <input
-                        type="text"
-                        name="job"
-                        value={contact.job}
-                        onChange={onContactChange}
-                        className="form-control"
+                     type="text"
+                     name="job"
+                     value={contact.job}
+                     onChange={onContactChange}
+                     className="form-control"
                         /*required={true}*/
                         placeholder="Job"
                       />
                     </div>
                     <div className="mb-2">
                       <select
-                        name="group"
-                        value={contact.group}
-                        onChange={onContactChange}
-                        className="form-control"
+                      name="group"
+                      value={contact.group}
+                      onChange={onContactChange}
+                      className="form-control"
                       >
                         <option value=""> Choose Group</option>
                         {groups.length > 0 &&
